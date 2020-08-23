@@ -1,0 +1,40 @@
+version: "3"
+services:
+  # Rails
+  app:
+    build:
+      context: ./app
+      dockerfile: Dockerfile
+    # volumes:
+    #   - "./app/src:/app"
+    #   - "tmp-data:/app/tmp"
+    ports:
+      # - "3000:3000"
+      - 80:80
+    tty: true
+    # working_dir: "/app"
+    # DB接続設定（localでのRDSの代わり）
+    networks:
+      - test-network
+
+  # Nginx
+  # web:
+  #   build:
+  #     context: "./web"
+  #     dockerfile: Dockerfile
+  #   volumes:
+  #     - "tmp-data:/app/tmp"
+  #   ports:
+  #     - "80:80"  
+  #   tty: true
+  #   depends_on:
+  #     - app
+
+# for bind volume
+# volumes:
+#   tmp-data:
+
+# DB接続設定（localでのRDSの代わり）
+networks:
+    test-network:
+        external: true

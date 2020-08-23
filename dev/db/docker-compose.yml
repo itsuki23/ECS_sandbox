@@ -1,0 +1,31 @@
+version: '3'
+services:
+  db:
+    image: mysql:8.0
+    # 8.0で認証プラグインが変わったので、mysql_native_passwordに戻す設定
+    command: --default-authentication-plugin=mysql_native_password
+
+    # restart: always
+    # hostname: db-host
+    # container_name: db-container
+
+    environment:
+      MYSQL_USER: root
+      MYSQL_DATABASE: db_test
+      TZ: "Asia/Tokyo"
+      BIND-ADDRESS: 0.0.0.0
+    env_file:
+      - .env # MYSQL_PASSWORD=<password>
+
+    ports:
+      - "3306:3306"
+    volumes:
+      - ./_mysql:/var/lib/mysql
+    tty: true
+
+    # 他のコンテナと接続するために以下を接続先にも追記
+    networks:
+      - test-network
+networks:
+    test-network:
+        external: true
